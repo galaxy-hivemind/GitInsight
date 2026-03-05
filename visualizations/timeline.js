@@ -29,12 +29,16 @@ const TimelineViz = {
     `;
         container.appendChild(controls);
 
+        const chartWrapper = document.createElement('div');
+        chartWrapper.className = 'gi-viz-container';
+        chartWrapper.style.flex = '1';
+        chartWrapper.style.minHeight = '300px';
+        chartWrapper.style.position = 'relative';
+        container.appendChild(chartWrapper);
+
         const canvas = document.createElement('canvas');
         canvas.id = 'gi-timeline-chart';
-        canvas.style.width = '100%';
-        canvas.style.height = '280px'; // Further reduced from 320px
-        canvas.style.maxHeight = '280px';
-        container.appendChild(canvas);
+        chartWrapper.appendChild(canvas);
 
         // Stats
         const stats = this.computeStats(frequencyData);
@@ -99,7 +103,6 @@ const TimelineViz = {
                 responsive: true,
                 maintainAspectRatio: false,
                 normalized: true, // Performance optimization
-                parsing: false, // Performance optimization (data is already parsed)
                 spanGaps: true,
                 interaction: {
                     mode: 'index',
