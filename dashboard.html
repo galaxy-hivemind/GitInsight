@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitInsight Dashboard</title>
+  <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+
+<body>
+  <div id="gi-app">
+    <!-- Header -->
+    <header class="gi-header">
+      <div class="gi-header-left">
+        <div class="gi-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#logoGrad)" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <defs>
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#a855f7" />
+              </linearGradient>
+            </defs>
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          <h1>GitInsight</h1>
+        </div>
+        <div id="gi-repo-name" class="gi-repo-name"></div>
+      </div>
+      <div class="gi-header-right">
+        <div id="gi-loading-indicator" class="gi-loading" style="display:none;">
+          <div class="gi-spinner"></div>
+          <span id="gi-loading-text">Loading...</span>
+        </div>
+        <button id="gi-refresh-btn" class="gi-btn gi-btn-secondary" title="Refresh data">↻ Refresh</button>
+        <button id="gi-close-btn" class="gi-btn gi-btn-ghost" title="Close dashboard">✕</button>
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="gi-tabs">
+      <button class="gi-tab active" data-tab="timeline">
+        <span class="gi-tab-icon">📈</span> Timeline
+      </button>
+      <button class="gi-tab" data-tab="heatmap">
+        <span class="gi-tab-icon">🔥</span> Heatmap
+      </button>
+      <button class="gi-tab" data-tab="contributors">
+        <span class="gi-tab-icon">👥</span> Contributors
+      </button>
+      <button class="gi-tab" data-tab="evolution">
+        <span class="gi-tab-icon">🌳</span> Evolution
+      </button>
+      <button class="gi-tab" data-tab="replay">
+        <span class="gi-tab-icon">🎬</span> Replay
+      </button>
+      <button class="gi-tab" data-tab="insights">
+        <span class="gi-tab-icon">🧠</span> Insights
+      </button>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div id="gi-progress-bar" class="gi-progress-bar" style="display:none;">
+      <div id="gi-progress-fill" class="gi-progress-fill"></div>
+    </div>
+
+    <!-- Tab Panels -->
+    <main class="gi-main">
+      <div id="gi-panel-timeline" class="gi-panel active"></div>
+      <div id="gi-panel-heatmap" class="gi-panel"></div>
+      <div id="gi-panel-contributors" class="gi-panel"></div>
+      <div id="gi-panel-evolution" class="gi-panel"></div>
+      <div id="gi-panel-replay" class="gi-panel"></div>
+      <div id="gi-panel-insights" class="gi-panel"></div>
+    </main>
+
+    <!-- Error State -->
+    <div id="gi-error" class="gi-error" style="display:none;">
+      <div class="gi-error-content">
+        <span class="gi-error-icon">⚠️</span>
+        <h3 id="gi-error-title">Error</h3>
+        <p id="gi-error-message"></p>
+        <div id="gi-token-section" class="gi-token-section" style="display:none;">
+          <p class="gi-token-hint">Paste your GitHub Personal Access Token below to get <strong>5,000
+              requests/hour</strong>:</p>
+          <div class="gi-token-input-row">
+            <input type="password" id="gi-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" spellcheck="false"
+              class="gi-token-input" />
+            <button id="gi-token-save" class="gi-btn gi-btn-primary">Save & Retry</button>
+          </div>
+          <p class="gi-token-hint-sub">
+            Generate a free token: <a href="https://github.com/settings/tokens/new" target="_blank"
+              rel="noopener">github.com/settings/tokens</a> → No scopes needed for public repos
+          </p>
+          <div id="gi-token-status" class="gi-token-status"></div>
+        </div>
+        <button id="gi-error-retry" class="gi-btn gi-btn-secondary">Retry Without Token</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load libraries -->
+  <script src="lib/d3.min.js"></script>
+  <script src="lib/chart.min.js"></script>
+
+  <!-- Load modules -->
+  <script src="modules/github-api.js"></script>
+  <script src="modules/cache.js"></script>
+  <script src="modules/commit-parser.js"></script>
+  <script src="modules/insights.js"></script>
+
+  <!-- Load visualizations -->
+  <script src="visualizations/timeline.js"></script>
+  <script src="visualizations/heatmap.js"></script>
+  <script src="visualizations/contributors.js"></script>
+  <script src="visualizations/evolution.js"></script>
+  <script src="visualizations/replay.js"></script>
+
+  <!-- Dashboard controller -->
+  <script src="dashboard.js"></script>
+</body>
+
+</html>
