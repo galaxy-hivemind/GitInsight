@@ -133,12 +133,17 @@ const ContributorsViz = {
             })
             .on('mouseout', () => { tooltip.style.display = 'none'; });
 
-        // Simulation
+        // Simulation with dynamic forces
+        const nodeCount = nodes.slice(0, 50).length;
+        const chargeStrength = Math.min(-300, -10 * nodeCount); // Scale repulsion with density
+
         this.simulation = d3.forceSimulation(nodes.slice(0, 50))
-            .force('charge', d3.forceManyBody().strength(-200))
-            .force('center', d3.forceCenter(width / 2, height / 2))
-            .force('collision', d3.forceCollide().radius(d => radiusScale(d.commits) + 5))
-            .force('link', d3.forceLink(validEdges).id(d => d.login).distance(100).strength(0.3))
+            .force('charge', d3.forceManyBody().strength(chargeStrength).distanceMax(500))
+            .force('center', d3.forceCenter(width / 2, height / 2).strength(0.05)) // Weaker center force to allow spread
+            .force('collision', d3.forceCollide().radius(d => radiusScale(d.commits) + 12).iterations(2))
+            .force('link', d3.forceLink(validEdges).id(d => d.login).distance(150).strength(0.1))
+            .force('x', d3.forceX(width / 2).strength(0.02))
+            .force('y', d3.forceY(height / 2).strength(0.02))
             .on('tick', () => {
                 link
                     .attr('x1', d => d.source.x)
@@ -147,8 +152,9 @@ const ContributorsViz = {
                     .attr('y2', d => d.target.y);
 
                 node.attr('transform', d => {
-                    d.x = Math.max(40, Math.min(width - 40, d.x));
-                    d.y = Math.max(40, Math.min(height - 40, d.y));
+                    // Stricter bounding box with padding
+                    d.x = Math.max(50, Math.min(width - 50, d.x));
+                    d.y = Math.max(50, Math.min(height - 50, d.y));
                     return `translate(${d.x}, ${d.y})`;
                 });
             });
