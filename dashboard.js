@@ -243,14 +243,16 @@
     // ====== Rendering ======
 
     function renderCurrentTab() {
-        switch (state.currentTab) {
-            case 'timeline': renderTimeline(); break;
-            case 'heatmap': renderHeatmap(); break;
-            case 'contributors': renderContributors(); break;
-            case 'evolution': renderEvolution(); break;
-            case 'replay': renderReplay(); break;
-            case 'insights': renderInsights(); break;
-        }
+        requestAnimationFrame(() => {
+            switch (state.currentTab) {
+                case 'timeline': renderTimeline(); break;
+                case 'heatmap': renderHeatmap(); break;
+                case 'contributors': renderContributors(); break;
+                case 'evolution': renderEvolution(); break;
+                case 'replay': renderReplay(); break;
+                case 'insights': renderInsights(); break;
+            }
+        });
     }
 
     function renderTimeline() {
