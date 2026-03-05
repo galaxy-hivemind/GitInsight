@@ -32,7 +32,7 @@ const TimelineViz = {
         const canvas = document.createElement('canvas');
         canvas.id = 'gi-timeline-chart';
         canvas.style.width = '100%';
-        canvas.style.height = '400px';
+        canvas.style.height = '320px';
         container.appendChild(canvas);
 
         // Stats
@@ -74,7 +74,7 @@ const TimelineViz = {
         if (this.chart) this.chart.destroy();
 
         const ctx = canvas.getContext('2d');
-        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
         gradient.addColorStop(0, 'rgba(99, 102, 241, 0.6)');
         gradient.addColorStop(1, 'rgba(99, 102, 241, 0.05)');
 
@@ -89,16 +89,20 @@ const TimelineViz = {
                     borderColor: '#6366f1',
                     borderWidth: chartType === 'line' ? 2 : 0,
                     fill: chartType === 'line',
-                    tension: 0.4,
+                    tension: 0.1, // Reduced tension for better performance
                     pointRadius: chartType === 'line' ? 2 : 0,
                     pointHoverRadius: 5,
-                    barPercentage: 0.8,
-                    borderRadius: chartType === 'bar' ? 3 : 0
+                    barPercentage: 0.9,
+                    borderRadius: chartType === 'bar' ? 2 : 0
                 }]
             },
             options: {
+                animation: false, // Disable animations for smoothness
                 responsive: true,
                 maintainAspectRatio: false,
+                normalized: true, // Performance optimization
+                parsing: false, // Performance optimization (data is already parsed)
+                spanGaps: true,
                 interaction: {
                     mode: 'index',
                     intersect: false
@@ -106,6 +110,7 @@ const TimelineViz = {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
+                        enabled: true,
                         backgroundColor: '#1e293b',
                         titleColor: '#e2e8f0',
                         bodyColor: '#94a3b8',
@@ -123,8 +128,8 @@ const TimelineViz = {
                         grid: { color: 'rgba(255,255,255,0.05)' },
                         ticks: {
                             color: '#64748b',
-                            maxTicksLimit: 20,
-                            maxRotation: 45
+                            maxTicksLimit: 15,
+                            maxRotation: 0 // Keep labels horizontal for cleanliness
                         }
                     },
                     y: {

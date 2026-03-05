@@ -3,7 +3,9 @@
  */
 
 /* ====== Reset & Base ====== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -28,12 +30,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 12px 24px;
   background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
   border-bottom: 1px solid #21262d;
   position: sticky;
   top: 0;
   z-index: 100;
+  height: 60px;
 }
 
 .gi-header-left {
@@ -92,7 +95,9 @@ body {
 }
 
 @keyframes gi-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ====== Progress Bar ====== */
@@ -218,7 +223,10 @@ body {
 /* ====== Main Content ====== */
 .gi-main {
   flex: 1;
-  padding: 24px;
+  padding: 20px 24px;
+  overflow-y: auto;
+  max-height: calc(100vh - 110px);
+  /* header + tabs */
 }
 
 .gi-panel {
@@ -231,8 +239,15 @@ body {
 }
 
 @keyframes gi-fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ====== Controls ====== */
@@ -278,8 +293,8 @@ body {
 /* ====== Stats Bar ====== */
 .gi-stats-bar {
   display: flex;
-  gap: 24px;
-  margin: 20px 0;
+  gap: 16px;
+  margin: 16px 0;
   flex-wrap: wrap;
 }
 
@@ -648,10 +663,21 @@ body {
   font-size: 13px;
 }
 
-.gi-added { color: #3fb950; }
-.gi-modified { color: #6366f1; }
-.gi-deleted { color: #f85149; }
-.gi-total { color: #8b949e; }
+.gi-added {
+  color: #3fb950;
+}
+
+.gi-modified {
+  color: #6366f1;
+}
+
+.gi-deleted {
+  color: #f85149;
+}
+
+.gi-total {
+  color: #8b949e;
+}
 
 .gi-replay-files {
   max-height: 200px;
@@ -676,9 +702,20 @@ body {
   margin-bottom: 2px;
 }
 
-.gi-file-added { color: #3fb950; background: rgba(63, 185, 80, 0.05); }
-.gi-file-modified { color: #6366f1; background: rgba(99, 102, 241, 0.05); }
-.gi-file-deleted { color: #f85149; background: rgba(248, 81, 73, 0.05); }
+.gi-file-added {
+  color: #3fb950;
+  background: rgba(63, 185, 80, 0.05);
+}
+
+.gi-file-modified {
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.gi-file-deleted {
+  color: #f85149;
+  background: rgba(248, 81, 73, 0.05);
+}
 
 /* ====== Scrollbar ====== */
 ::-webkit-scrollbar {
