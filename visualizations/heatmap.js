@@ -62,7 +62,8 @@ const HeatmapViz = {
 
     drawTreemap(container, tooltip, files, metric) {
         container.innerHTML = '';
-        const width = container.clientWidth;
+        // Robust dimension detection
+        const width = container.clientWidth || 800;
         const height = container.clientHeight || 500;
 
         // Build hierarchy

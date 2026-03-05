@@ -47,7 +47,8 @@ const EvolutionViz = {
     },
 
     drawBubbleChart(container, tooltip, files) {
-        const width = container.clientWidth;
+        // Robust dimension detection
+        const width = container.clientWidth || 800;
         const height = container.clientHeight || 550;
 
         // Build hierarchy from file paths

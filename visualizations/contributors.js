@@ -68,7 +68,8 @@ const ContributorsViz = {
     },
 
     drawGraph(container, tooltip, nodes, edges) {
-        const width = container.clientWidth;
+        // Robust dimension detection with fallbacks
+        const width = container.clientWidth || 800;
         const height = container.clientHeight || 500;
 
         const svg = d3.select(container)
@@ -84,6 +85,16 @@ const ContributorsViz = {
         const nodeLogins = new Set(nodes.map(n => n.login));
         const validEdges = edges.filter(e => nodeLogins.has(e.source) && nodeLogins.has(e.target));
 
+        // Limit nodes for performance and readability
+        const graphNodes = nodes.slice(0, 50);
+
+        // Pre-position nodes to prevent top-left clumping
+        graphNodes.forEach((node, i) => {
+            const angle = (i / graphNodes.length) * 2 * Math.PI;
+            node.x = width / 2 + Math.cos(angle) * (width / 4);
+            node.y = height / 2 + Math.sin(angle) * (height / 4);
+        });
+
         // Links
         const link = svg.append('g')
             .selectAll('line')
@@ -96,7 +107,7 @@ const ContributorsViz = {
         // Nodes
         const node = svg.append('g')
             .selectAll('g')
-            .data(nodes.slice(0, 50)) // Limit to top 50
+            .data(graphNodes)
             .join('g')
             .style('cursor', 'pointer');
 
@@ -134,16 +145,15 @@ const ContributorsViz = {
             .on('mouseout', () => { tooltip.style.display = 'none'; });
 
         // Simulation with dynamic forces
-        const nodeCount = nodes.slice(0, 50).length;
-        const chargeStrength = Math.min(-300, -10 * nodeCount); // Scale repulsion with density
+        const chargeStrength = Math.min(-300, -15 * graphNodes.length);
 
-        this.simulation = d3.forceSimulation(nodes.slice(0, 50))
-            .force('charge', d3.forceManyBody().strength(chargeStrength).distanceMax(500))
-            .force('center', d3.forceCenter(width / 2, height / 2).strength(0.05)) // Weaker center force to allow spread
-            .force('collision', d3.forceCollide().radius(d => radiusScale(d.commits) + 12).iterations(2))
-            .force('link', d3.forceLink(validEdges).id(d => d.login).distance(150).strength(0.1))
-            .force('x', d3.forceX(width / 2).strength(0.02))
-            .force('y', d3.forceY(height / 2).strength(0.02))
+        this.simulation = d3.forceSimulation(graphNodes)
+            .force('charge', d3.forceManyBody().strength(chargeStrength).distanceMax(600))
+            .force('center', d3.forceCenter(width / 2, height / 2).strength(0.05))
+            .force('collision', d3.forceCollide().radius(d => radiusScale(d.commits) + 15).iterations(2))
+            .force('link', d3.forceLink(validEdges).id(d => d.login).distance(180).strength(0.1))
+            .force('x', d3.forceX(width / 2).strength(0.04))
+            .force('y', d3.forceY(height / 2).strength(0.04))
             .on('tick', () => {
                 link
                     .attr('x1', d => d.source.x)
