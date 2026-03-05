@@ -32,29 +32,27 @@ const TimelineViz = {
         const canvas = document.createElement('canvas');
         canvas.id = 'gi-timeline-chart';
         canvas.style.width = '100%';
-        canvas.style.height = '320px';
+        canvas.style.height = '280px'; // Further reduced from 320px
+        canvas.style.maxHeight = '280px';
         container.appendChild(canvas);
 
         // Stats
         const stats = this.computeStats(frequencyData);
         const statsDiv = document.createElement('div');
         statsDiv.className = 'gi-stats-bar';
+        statsDiv.style.margin = '8px 0'; // Tighter margin
         statsDiv.innerHTML = `
-      <div class="gi-stat">
-        <span class="gi-stat-value">${stats.total}</span>
-        <span class="gi-stat-label">Total Commits</span>
+      <div class="gi-stat" style="padding: 10px 16px;">
+        <span class="gi-stat-value" style="font-size: 20px;">${stats.total}</span>
+        <span class="gi-stat-label">Commits</span>
       </div>
-      <div class="gi-stat">
-        <span class="gi-stat-value">${stats.avg}</span>
+      <div class="gi-stat" style="padding: 10px 16px;">
+        <span class="gi-stat-value" style="font-size: 20px;">${stats.avg}</span>
         <span class="gi-stat-label">Avg/Period</span>
       </div>
-      <div class="gi-stat">
-        <span class="gi-stat-value">${stats.peak}</span>
+      <div class="gi-stat" style="padding: 10px 16px;">
+        <span class="gi-stat-value" style="font-size: 20px;">${stats.peak}</span>
         <span class="gi-stat-label">Peak</span>
-      </div>
-      <div class="gi-stat">
-        <span class="gi-stat-value">${stats.peakDate}</span>
-        <span class="gi-stat-label">Most Active</span>
       </div>
     `;
         container.appendChild(statsDiv);

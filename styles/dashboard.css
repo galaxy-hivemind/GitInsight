@@ -223,18 +223,22 @@ body {
 /* ====== Main Content ====== */
 .gi-main {
   flex: 1;
-  padding: 20px 24px;
-  overflow-y: auto;
-  max-height: calc(100vh - 110px);
+  padding: 16px 24px !important;
+  overflow-y: auto !important;
+  max-height: calc(100vh - 110px) !important;
   /* header + tabs */
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .gi-panel {
   display: none;
+  flex: 1 !important;
+  flex-direction: column !important;
 }
 
 .gi-panel.active {
-  display: block;
+  display: flex !important;
   animation: gi-fadeIn 0.3s ease;
 }
 
